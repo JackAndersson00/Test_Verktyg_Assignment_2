@@ -1,5 +1,4 @@
 const express = require('express');
-
 const logic = require('./logic.js');
 
 const server = express();

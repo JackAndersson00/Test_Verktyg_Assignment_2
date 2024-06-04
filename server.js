@@ -99,6 +99,8 @@ server.delete("/api/products/:id", (req, res) => {
     });
 });
 
+// Add GET search option ===>
+
 // Start the server
 const port = 3000;
 server.listen(port, () => {

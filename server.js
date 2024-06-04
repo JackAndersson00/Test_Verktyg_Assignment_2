@@ -21,7 +21,7 @@ db.connect((err) => {
 });
 
 // Get all products
-server.get("/api/products/v1/", (req, res) => {
+server.get("/api/v1/products", (req, res) => {
     db.query("SELECT * FROM products", (err, results) => {
         if (err) {
             res.status(500).send(err);
@@ -32,7 +32,7 @@ server.get("/api/products/v1/", (req, res) => {
 });
 
 // Get product by ID
-server.get("/api/products/v1/:id", (req, res) => {
+server.get("/api/v1/products/:id", (req, res) => {
     const productId = req.params.id;
     db.query("SELECT * FROM products WHERE id = ?", [productId], (err, results) => {
         if (err) {
@@ -46,7 +46,7 @@ server.get("/api/products/v1/:id", (req, res) => {
 });
 
 // Add a new product
-server.post("/api/products/v1/", (req, res) => {
+server.post("/api/v1/products", (req, res) => {
     const { name, description, price, quantity, category } = req.body;
     const query = "INSERT INTO products (name, description, price, quantity, category) VALUES (?, ?, ?, ?, ?)";
     db.query(query, [name, description, price, quantity, category], (err, results) => {
@@ -59,7 +59,7 @@ server.post("/api/products/v1/", (req, res) => {
 });
 
 // Update a product by ID
-server.put("/api/products/v1/:id", (req, res) => {
+server.put("/api/v1/products/:id", (req, res) => {
     const productId = req.params.id;
     const { name, description, price, quantity, category } = req.body;
     const query = "UPDATE products SET name = ?, description = ?, price = ?, quantity = ?, category = ? WHERE id = ?";
@@ -75,7 +75,7 @@ server.put("/api/products/v1/:id", (req, res) => {
 });
 
 // Delete all products
-server.delete("/api/products/v1/", (req, res) => {
+server.delete("/api/v1/products", (req, res) => {
     db.query("DELETE FROM products", (err, results) => {
         if (err) {
             res.status(500).send(err);
@@ -86,7 +86,7 @@ server.delete("/api/products/v1/", (req, res) => {
 });
 
 // Delete a product by ID
-server.delete("/api/products/v1/:id", (req, res) => {
+server.delete("/api/v1/products/:id", (req, res) => {
     const productId = req.params.id;
     db.query("DELETE FROM products WHERE id = ?", [productId], (err, results) => {
         if (err) {

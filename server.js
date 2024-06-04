@@ -1,105 +1,89 @@
-const express = require("express");
-const mysql = require("mysql2");
+const express = require('express');
+
+const logic = require('./logic.js');
 
 const server = express();
 server.use(express.json());
 
-// MySQL connection setup
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'admin123!',
-    database: 'mydatabase'
-});
+// Routes using logic.js functions
 
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err.stack);
-        return;
+// GET all products
+server.get('/api/v1/products', async (req, res) => {
+    try {
+        const products = await logic.getAllProducts();
+        res.json(products);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
     }
-    console.log('Connected to the database.');
 });
 
-// Get all products
-server.get("/api/v1/products", (req, res) => {
-    db.query("SELECT * FROM products", (err, results) => {
-        if (err) {
-            res.status(500).send(err);
+// GET a specific product by id
+server.get('/api/v1/products/:id', async (req, res) => {
+    try {
+        const product = await logic.getProductById(req.params.id);
+        if (!product) {
+            res.status(404).send('Product not found');
         } else {
-            res.json(results);
+            res.json(product);
         }
-    });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-// Get product by ID
-server.get("/api/v1/products/:id", (req, res) => {
-    const productId = req.params.id;
-    db.query("SELECT * FROM products WHERE id = ?", [productId], (err, results) => {
-        if (err) {
-            res.status(500).send(err);
-        } else if (results.length === 0) {
-            res.status(404).send("Product not found");
+// POST a product
+server.post('/api/v1/products', async (req, res) => {
+    try {
+        const newProduct = await logic.addProduct(req.body);
+        res.status(201).json(newProduct);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// PUT a product by id
+server.put('/api/v1/products/:id', async (req, res) => {
+    try {
+        await logic.updateProduct(req.params.id, req.body);
+        res.status(204).send();
+    } catch (err) {
+        console.error(err);
+        if (err.message === 'Product not found') {
+            res.status(404).send(err.message);
         } else {
-            res.json(results[0]);
+            res.status(500).send('Internal Server Error');
         }
-    });
+    }
 });
 
-// Add a new product
-server.post("/api/v1/products", (req, res) => {
-    const { name, description, price, quantity, category } = req.body;
-    const query = "INSERT INTO products (name, description, price, quantity, category) VALUES (?, ?, ?, ?, ?)";
-    db.query(query, [name, description, price, quantity, category], (err, results) => {
-        if (err) {
-            res.status(500).send(err);
+// DELETE all products
+server.delete('/api/v1/products', async (req, res) => {
+    try {
+        await logic.deleteAllProducts();
+        res.status(204).send();
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// DELETE a product by id
+server.delete('/api/v1/products/:id', async (req, res) => {
+    try {
+        await logic.deleteProductById(req.params.id);
+        res.status(204).send();
+    } catch (err) {
+        console.error(err);
+        if (err.message === 'Product not found') {
+            res.status(404).send(err.message);
         } else {
-            res.status(201).json({ id: results.insertId, name, description, price, quantity, category });
+            res.status(500).send('Internal Server Error');
         }
-    });
+    }
 });
-
-// Update a product by ID
-server.put("/api/v1/products/:id", (req, res) => {
-    const productId = req.params.id;
-    const { name, description, price, quantity, category } = req.body;
-    const query = "UPDATE products SET name = ?, description = ?, price = ?, quantity = ?, category = ? WHERE id = ?";
-    db.query(query, [name, description, price, quantity, category, productId], (err, results) => {
-        if (err) {
-            res.status(500).send(err);
-        } else if (results.affectedRows === 0) {
-            res.status(404).send("Product not found");
-        } else {
-            res.json({ id: productId, name, description, price, quantity, category });
-        }
-    });
-});
-
-// Delete all products
-server.delete("/api/v1/products", (req, res) => {
-    db.query("DELETE FROM products", (err, results) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.status(204).send();
-        }
-    });
-});
-
-// Delete a product by ID
-server.delete("/api/v1/products/:id", (req, res) => {
-    const productId = req.params.id;
-    db.query("DELETE FROM products WHERE id = ?", [productId], (err, results) => {
-        if (err) {
-            res.status(500).send(err);
-        } else if (results.affectedRows === 0) {
-            res.status(404).send("Product not found");
-        } else {
-            res.status(204).send();
-        }
-    });
-});
-
-// Add GET search option >>>
 
 // Start the server
 const port = 3000;

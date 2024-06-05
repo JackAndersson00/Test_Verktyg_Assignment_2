@@ -36,7 +36,13 @@ async function updateProduct(id, product) {
 
 // Function to delete all products
 async function deleteAllProducts() {
-    await connection.query('DELETE FROM products');
+    try {
+        await connection.query('DELETE FROM products');
+        await connection.query('ALTER TABLE products AUTO_INCREMENT = 1');
+    } catch (err) {
+        console.error(err);
+        throw err; // Re-throw the error for server handling
+    }
 }
 
 // Function to delete a product by ID

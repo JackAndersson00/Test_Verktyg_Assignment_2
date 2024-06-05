@@ -21,16 +21,17 @@ server.get('/api/v1/products', async (req, res) => {
 server.get('/api/v1/products/:id', async (req, res) => {
     try {
         const product = await logic.getProductById(req.params.id);
-        if (!product) {
+        res.json(product);
+    } catch (err) {
+        if (err.message === 'Product not found') {
             res.status(404).send('Product not found');
         } else {
-            res.json(product);
+            console.error(err);
+            res.status(500).send('Internal Server Error');
         }
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
     }
 });
+
 
 // POST a product
 server.post('/api/v1/products', async (req, res) => {
@@ -51,7 +52,7 @@ server.put('/api/v1/products/:id', async (req, res) => {
     } catch (err) {
         console.error(err);
         if (err.message === 'Product not found') {
-            res.status(404).send(err.message);
+            res.status(404).send('Product not found');
         } else {
             res.status(500).send('Internal Server Error');
         }
@@ -77,12 +78,13 @@ server.delete('/api/v1/products/:id', async (req, res) => {
     } catch (err) {
         console.error(err);
         if (err.message === 'Product not found') {
-            res.status(404).send(err.message);
+            res.status(404).json({ error: 'Product not found' }); // Return JSON error response
         } else {
             res.status(500).send('Internal Server Error');
         }
     }
 });
+
 
 // Start the server
 const port = 3000;

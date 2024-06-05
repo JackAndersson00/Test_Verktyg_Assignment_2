@@ -31,7 +31,8 @@ async function addProduct(product) {
 async function updateProduct(id, product) {
     const { name, description, price, quantity, category } = product;
     const query = 'UPDATE products SET name = ?, description = ?, price = ?, quantity = ?, category = ? WHERE id = ?';
-    await connection.query(query, [name, description, price, quantity, category, id]);
+    const [result] = await connection.query(query, [name, description, price, quantity, category, id]);
+    return result.affectedRows; // Return the number of affected rows
 }
 
 // Function to delete all products
@@ -47,7 +48,8 @@ async function deleteAllProducts() {
 
 // Function to delete a product by ID
 async function deleteProductById(id) {
-    await connection.query('DELETE FROM products WHERE id = ?', [id]);
+    const result = await connection.query('DELETE FROM products WHERE id = ?', [id]);
+    return result[0]; // Return the first element of the result array
 }
 
 module.exports = {

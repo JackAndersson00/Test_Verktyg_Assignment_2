@@ -1,0 +1,489 @@
+{
+	"info": {
+		"_postman_id": "62dcaf26-1284-4651-92a8-23cc8e1bf570",
+		"name": "Samples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34149295"
+	},
+	"item": [
+		{
+			"name": "POST test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Product creation successful\", function () {\r",
+							"  pm.response.to.have.status(201); // Check for status code 201 (Created)\r",
+							"  pm.expect(pm.response.json()).to.include({ // Check for presence of key properties\r",
+							"    name: \"New Product\",\r",
+							"    description: \"1\",\r",
+							"    price: 11.11,\r",
+							"    quantity: 1111,\r",
+							"    category: \"111\"\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has expected structure\", function () {\r",
+							"  pm.expect(pm.response.json()).to.be.an('object'); // Check if response is an object\r",
+							"  pm.expect(pm.response.json()).to.have.all.keys( // Check for presence of specific keys\r",
+							"    \"id\", \"name\", \"description\", \"price\", \"quantity\", \"category\"\r",
+							"  );\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"New Product\",\r\n  \"description\": \"1\",\r\n  \"price\": 11.11,\r\n  \"quantity\": 1111,\r\n  \"category\": \"111\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response has a product list\", function () {\r",
+							"  pm.expect(pm.response.json()).to.be.an('array');\r",
+							"});\r",
+							"pm.test(\"First product has name 'New Product'\", function () {\r",
+							"  pm.expect(pm.response.json()[0].name).to.equal('New Product');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT test by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Product update successful\", function () {\r",
+							"  pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Updated Product Name\",\r\n    \"description\": \"updated\",\r\n    \"price\": 99.99,\r\n    \"quantity\": 3,\r\n    \"category\": \"Updated category\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT test by id where id is wrong",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404 and error message is 'Product not found'\", function () {\r",
+							"  pm.response.to.have.status(404);\r",
+							"  pm.expect(pm.response.text()).to.include(\"Product not found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Updated Product Name\",\r\n    \"description\": \"updated\",\r\n    \"price\": 99.99,\r\n    \"quantity\": 3,\r\n    \"category\": \"Updated category\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/99999999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"99999999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET test by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"First product has id '1'\", function () {\r",
+							"  pm.expect(pm.response.json().id).to.equal(1);\r",
+							"});\r",
+							"pm.test(\"First product has name 'Updated Product Name'\", function () {\r",
+							"  pm.expect(pm.response.json().name).to.equal(\"Updated Product Name\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET test by id where id is wrong",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404 and error message is 'Product not found'\", function () {\r",
+							"  pm.response.to.have.status(404);\r",
+							"  pm.expect(pm.response.text()).to.include(\"Product not found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/99999999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"99999999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE test by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deleting product with id '1'\", function () {\r",
+							"  pm.response.to.have.status(204); // No content returned for successful DELETE\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST creation for mass deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Product creation successful\", function () {\r",
+							"  pm.response.to.have.status(201); // Check for status code 201 (Created)\r",
+							"  pm.expect(pm.response.json()).to.include({ // Check for presence of key properties\r",
+							"    name: \"New Product\",\r",
+							"    description: \"1\",\r",
+							"    price: 11.11,\r",
+							"    quantity: 1111,\r",
+							"    category: \"111\"\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has expected structure\", function () {\r",
+							"  pm.expect(pm.response.json()).to.be.an('object'); // Check if response is an object\r",
+							"  pm.expect(pm.response.json()).to.have.all.keys( // Check for presence of specific keys\r",
+							"    \"id\", \"name\", \"description\", \"price\", \"quantity\", \"category\"\r",
+							"  );\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"New Product\",\r\n  \"description\": \"1\",\r\n  \"price\": 11.11,\r\n  \"quantity\": 1111,\r\n  \"category\": \"111\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE all test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deleting all products\", function () {\r",
+							"  pm.response.to.have.status(204); // No content returned for successful DELETE\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE test by id is wrong",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deleting a non-existent product resulting in 404\", function () {\r",
+							"  pm.response.to.have.status(404);\r",
+							"  pm.expect(pm.response.json()).to.have.property('error', 'Product not found');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/99999999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"99999999"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

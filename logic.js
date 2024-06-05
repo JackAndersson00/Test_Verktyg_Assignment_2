@@ -39,7 +39,10 @@ async function addProduct(product) {
 // Function to update a product by ID
 async function updateProduct(id, product) {
     try {
-        await db.updateProduct(id, product);
+        const updatedRows = await db.updateProduct(id, product);
+        if (updatedRows === 0) {
+            throw new Error('Product not found');
+        }
     } catch (err) {
         console.error(err);
         throw err; // Re-throw the error for server handling
@@ -59,7 +62,11 @@ async function deleteAllProducts() {
 // Function to delete a product by ID
 async function deleteProductById(id) {
     try {
-        await db.deleteProductById(id);
+        const result = await db.deleteProductById(id);
+        console.log(result.affectedRows); // Log the value of affectedRows
+        if (result.affectedRows === 0) {
+            throw new Error('Product not found');
+        }
     } catch (err) {
         console.error(err);
         throw err; // Re-throw the error for server handling

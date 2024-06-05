@@ -56,11 +56,13 @@ async function deleteProductById(id) {
 
 // Function to get products by name containing a keyword
 async function getProductsByName(keyword) {
-    const query = `SELECT * FROM products WHERE name LIKE '%${keyword}%'`;
+    const query = 'SELECT * FROM products WHERE name LIKE ?';
+    const likeKeyword = `%${keyword}%`; // Add wildcard characters to the keyword
     console.log('SQL Query:', query); // Log the generated SQL query
-    const [rows] = await connection.query(query);
+    const [rows] = await connection.query(query, [likeKeyword]);
     return rows;
 }
+
 
 module.exports = {
     getAllProducts,

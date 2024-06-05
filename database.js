@@ -1,11 +1,13 @@
 const mysql = require('mysql2/promise');
+require('dotenv').config(); // Load environment variables from .env file
 
 const connection = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'admin123!',
-    database: 'mydatabase'
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
 });
+
 
 // Function to get all products
 async function getAllProducts() {

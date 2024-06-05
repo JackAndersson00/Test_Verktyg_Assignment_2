@@ -11,14 +11,7 @@ server.get('/api/v1/products', async (req, res) => {
     const keyword = req.query.name;
     console.log('Keyword:', keyword); // Log the keyword being used (for debugging)
     try {
-        let products;
-        if (keyword) {
-            // If a keyword is provided, fetch products by name containing the keyword
-            products = await logic.getProductsByName(keyword);
-        } else {
-            // If no keyword is provided, fetch all products
-            products = await logic.getAllProducts();
-        }
+        const products = await logic.getProducts(keyword);
         res.json(products);
     } catch (err) {
         console.error(err);
@@ -40,7 +33,6 @@ server.get('/api/v1/products/:id', async (req, res) => {
         }
     }
 });
-
 
 // POST a product
 server.post('/api/v1/products', async (req, res) => {

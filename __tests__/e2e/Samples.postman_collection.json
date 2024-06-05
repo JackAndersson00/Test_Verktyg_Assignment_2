@@ -362,11 +362,11 @@
 							"pm.test(\"Product creation successful\", function () {\r",
 							"  pm.response.to.have.status(201); // Check for status code 201 (Created)\r",
 							"  pm.expect(pm.response.json()).to.include({ // Check for presence of key properties\r",
-							"    name: \"New Product\",\r",
-							"    description: \"1\",\r",
-							"    price: 11.11,\r",
-							"    quantity: 1111,\r",
-							"    category: \"111\"\r",
+							"    name: \"Electronics\",\r",
+							"    description: \"This product type includes various electronic devices such as smartphones, laptops, and tablets.\",\r",
+							"    price: 599.99,\r",
+							"    quantity: 50,\r",
+							"    category: \"Electronics\"\r",
 							"  });\r",
 							"});\r",
 							"\r",
@@ -388,7 +388,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"New Product\",\r\n  \"description\": \"1\",\r\n  \"price\": 11.11,\r\n  \"quantity\": 1111,\r\n  \"category\": \"111\"\r\n}\r\n",
+					"raw": "{\r\n  \"name\": \"Electronics\",\r\n  \"description\": \"This product type includes various electronic devices such as smartphones, laptops, and tablets.\",\r\n  \"price\": 599.99,\r\n  \"quantity\": 50,\r\n  \"category\": \"Electronics\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -406,6 +406,121 @@
 						"api",
 						"v1",
 						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST creation for mass deletion 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Product creation successful\", function () {\r",
+							"  pm.response.to.have.status(201); // Check for status code 201 (Created)\r",
+							"  pm.expect(pm.response.json()).to.include({ // Check for presence of key properties\r",
+							"    name: \"Home Decor\",\r",
+							"    description: \"This product type encompasses decorative items for homes, including wall art, vases, and decorative pillows.\",\r",
+							"    price: 39.99,\r",
+							"    quantity: 100,\r",
+							"    category: \"Home Decor\"\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has expected structure\", function () {\r",
+							"  pm.expect(pm.response.json()).to.be.an('object'); // Check if response is an object\r",
+							"  pm.expect(pm.response.json()).to.have.all.keys( // Check for presence of specific keys\r",
+							"    \"id\", \"name\", \"description\", \"price\", \"quantity\", \"category\"\r",
+							"  );\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Home Decor\",\r\n  \"description\": \"This product type encompasses decorative items for homes, including wall art, vases, and decorative pillows.\",\r\n  \"price\": 39.99,\r\n  \"quantity\": 100,\r\n  \"category\": \"Home Decor\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET search test by name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"First product has name 'Updated Product Name'\", function () {\r",
+							"  pm.expect(pm.response.json()[0].name).to.equal(\"Electronics\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products?name=Electronics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Electronics"
+						}
 					]
 				}
 			},

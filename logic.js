@@ -73,11 +73,23 @@ async function deleteProductById(id) {
     }
 }
 
+// Function to get products by name containing a keyword
+async function getProductsByName(keyword) {
+    try {
+        const products = await db.getProductsByName(keyword);
+        return products;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
     addProduct,
     updateProduct,
     deleteAllProducts,
-    deleteProductById
+    deleteProductById,
+    getProductsByName
 };

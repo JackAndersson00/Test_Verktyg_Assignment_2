@@ -52,11 +52,20 @@ async function deleteProductById(id) {
     return result[0]; // Return the first element of the result array
 }
 
+// Function to get products by name containing a keyword
+async function getProductsByName(keyword) {
+    const query = `SELECT * FROM products WHERE name LIKE '%${keyword}%'`;
+    console.log('SQL Query:', query); // Log the generated SQL query
+    const [rows] = await connection.query(query);
+    return rows;
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
     addProduct,
     updateProduct,
     deleteAllProducts,
-    deleteProductById
+    deleteProductById,
+    getProductsByName
 };

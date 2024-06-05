@@ -6,10 +6,19 @@ server.use(express.json());
 
 // Routes using logic.js functions
 
-// GET all products
+// GET products (all or by name containing a keyword)
 server.get('/api/v1/products', async (req, res) => {
+    const keyword = req.query.name;
+    console.log('Keyword:', keyword); // Log the keyword being used (for debugging)
     try {
-        const products = await logic.getAllProducts();
+        let products;
+        if (keyword) {
+            // If a keyword is provided, fetch products by name containing the keyword
+            products = await logic.getProductsByName(keyword);
+        } else {
+            // If no keyword is provided, fetch all products
+            products = await logic.getAllProducts();
+        }
         res.json(products);
     } catch (err) {
         console.error(err);
@@ -84,7 +93,6 @@ server.delete('/api/v1/products/:id', async (req, res) => {
         }
     }
 });
-
 
 // Start the server
 const port = 3000;

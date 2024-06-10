@@ -1,5 +1,3 @@
-Here's a more polished version of your Markdown document:
-
 # Test Verktyg Assignment 2
 
 ## MySQL Setup

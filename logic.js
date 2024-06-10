@@ -25,6 +25,7 @@ async function updateProduct(id, product) {
     if (updatedRows === 0) {
         throw new Error('Product not found');
     }
+    return { id, ...product }
 }
 
 async function deleteAllProducts() {

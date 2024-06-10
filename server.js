@@ -48,8 +48,9 @@ server.post('/api/v1/products', async (req, res) => {
 // PUT a product by id
 server.put('/api/v1/products/:id', async (req, res) => {
     try {
-        await logic.updateProduct(req.params.id, req.body);
-        res.status(204).send();
+        const updatedProduct = await logic.updateProduct(req.params.id, req.body);
+        console.log("updatedProd", updatedProduct)
+        res.status(204).json(updatedProduct);
     } catch (err) {
         console.error(err);
         if (err.message === 'Product not found') {

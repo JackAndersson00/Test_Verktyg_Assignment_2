@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "test:e2e": "newman run __tests__/e2e/Samples.postman_collection.json",
-    "test": "mocha"
+    "test": "mocha __tests__/**/*.js",
+    "testint": "mocha __tests__/integration/*.js"
   },
   "author": "",
   "license": "ISC",

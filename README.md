@@ -1,7 +1,10 @@
-# Test_Verktyg_Assignment_2
+Here's a more polished version of your Markdown document:
 
+# Test Verktyg Assignment 2
 
-## Mysql setup
+## MySQL Setup
+
+To set up the MySQL database, execute the following SQL commands:
 
 ```sql
 CREATE DATABASE mydatabase;
@@ -18,22 +21,42 @@ CREATE TABLE products (
 );
 ```
 
-## .env setup
-```.env
+## .env Setup
+
+Create a `.env` file in your project root directory with the following content:
+
+```plaintext
 HOST=YOURHOST
 USER=YOURUSERNAME
 PASSWORD=YOURPASSWORD
 DATABASE=mydatabase
 ```
 
-"npm run start" to start server
-"npm run test:e2e" to start e2e tests
-"npm run test" to start unit tests
-"npm run testint" to start integration tests
+## Running the Server and Tests
 
-## Developed by
+To start the server, run:
+```bash
+npm run start
+```
 
-* Jack Andersson
-* Kemal Hadziavdic
-* Tomislav Vuckovic
-* Joakim Christoffersson
+To start end-to-end (E2E) tests, run:
+```bash
+npm run test:e2e
+```
+
+To start unit tests, run:
+```bash
+npm run test
+```
+
+To start integration tests, run:
+```bash
+npm run testint
+```
+
+## Developed By
+
+- Jack Andersson
+- Kemal Hadziavdic
+- Tomislav Vuckovic
+- Joakim Christoffersson
